@@ -35,7 +35,6 @@ class SolvedAPI:
         # 페이지 파싱
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # 제출 상태를 찾기 (예: '맞았습니다!!' 텍스트가 있는 div 찾기)
         records = soup.find_all('tr')[1:]
         for record in records:
             result_span = record.find('span', class_='result-text result-ac')
@@ -43,7 +42,7 @@ class SolvedAPI:
             if result_span == None:
                 continue
             
-            elif result_span.get_text() == '맞았습니다!!' or result_span.get_text() == '맞았습니다!!':
+            elif result_span.get_text() == '맞았습니다!!' or result_span.get_text() == '100점':
                 
                 # 문제 제목 추출
                 problem_title = record.find('a', class_='problem_title')
