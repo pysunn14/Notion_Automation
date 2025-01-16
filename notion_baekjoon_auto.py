@@ -4,6 +4,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 
 # 환경 변수 로드 
 load_dotenv()
@@ -48,14 +49,17 @@ class SolvedAPI:
                 problem_title = record.find('a', class_='problem_title')
                 print(problem_title.get('title'))
                 
-                # 문제 번호 추출
+                # 문제 번호 추출    
                 print(problem_title.text)
                 
                 # 타임스탬프 추출
                 problem_timestamp = record.find('a', class_='real-time-update')
-                print(problem_timestamp.get('title'))
+
+                # 한국 표준시로 변환
+                kst_time = datetime.fromisoformat(problem_timestamp.get('title'))
+                print("KST : ", kst_time.isoformat() + "+09:00")
                 
-                return problem_title.text, problem_timestamp.get('title')
+                return problem_title.text, kst_time.isoformat()
             
     def get_user_solved(user_id : str):
         url = f"https://solved.ac/api/v3/search/problem?query=solved_by%3A{user_id}&sort=level&direction=desc"
